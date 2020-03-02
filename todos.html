@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="todos.css">
+</head>
+<style type="css">
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to  {
+  opacity: 0;
+}
+</style>
+<body>
+  <div id="todos">
+    <section class="todoapp">
+
+      <header class="header">
+        <h1>Todos</h1>
+        <input type="text" class="new-todo" placeholder="Ajouter une tache" v-model="newtache" @keyup.enter="add()">
+      </header>
+
+      <div class="main">
+        <input type="checkbox" id="toggle-all" class="toggle-all">
+        <label for="toggle-all">Mark all as complete</label>
+        <ul class="todo-list">
+
+          <transition-group name="fade" appear tag="div">
+            <div class="todo" v-for="todo, index in list" :key="todo.name"
+             >
+            
+                <todo :name="todo.name" @del="del(index)" :completed="completed" ></todo>
+          
+              <!-- <input type="text" class="edit"> -->
+            </div>
+          </transition-group>
+
+         
+        </ul>
+      </div>
+      <footer class="footer" v-show="list.length > 0">
+        <span class="todo-count"><strong>{{list.length}}</strong> tâches à faire</span>
+        <ul class="filters">
+          <li><a href="#" class="selected">Toutes</a></li>
+          <li><a href="#">À faire</a></li>
+          <li><a href="#">Faites</a></li>
+        </ul>
+        <button class="clear-completed">Clear accomplished</button>
+      </footer>
+    </section>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
