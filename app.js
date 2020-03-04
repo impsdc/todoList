@@ -1,42 +1,44 @@
 Vue.component('todo',{
     props: {
         name: String,
-   
+        done:Boolean, default: false
     },
     data: function () {
-        return { done: false, completed:false, edit:false }
+        return {isDone: this.done}
     },
     template:
-    `<li class="view" :class="{'completed': done, 'editing' : edit}">
-
+    `<div class="view" >
+   
     <input type="checkbox" class="toggle" v-model="done" @click="tib">
     <label @dblclick="chang">{{name}}</label>
     <button class="destroy" @click="del"></button>
+   
 
-    </li>`, 
+    </div>`, 
     methods: {
-       tib: function (e) {
-        this.done = !this.done
-        this.completed = true
-        console.log(this.done)
-        }, 
+       tib: function () {
+        this.isDone = !this.isDone
+        this.$emit('update:done', this.isDone)
+        },
+        chang: function () {
+            
+            this.$emit('edittodo')
+        },
         del: function () {
             this.$emit('del')
         }, 
-        chang: function () {
-            console.log('lol')
-             this.$emit('edit')
-            this.edit = true
-        }
     },
 });
 
 new Vue({
     el:"#todos", 
+    props:{done:Boolean, default:false},
     data: {
         list: [],
         newtache: '', 
-        completed:false
+        completed:false, 
+        edit: false, 
+        editing: null
     },
     computed:{
         doing: function () {
@@ -50,8 +52,14 @@ new Vue({
             })
             this.newtache = ''
         },
+        tib: function (){
+            this.done = !this.done
+        },
         del: function (index) {
             this.$delete(this.list,index)
+        },
+        edittodo: function (todo){
+            this.editing = todo
         }
     },
 })

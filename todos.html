@@ -26,16 +26,19 @@
         <label for="toggle-all">Mark all as complete</label>
         <ul class="todo-list">
 
-          <transition-group name="fade" appear tag="div">
-            <div class="todo" v-for="todo, index in list" :key="todo.name"
-             >
+    
+            <li class="todo" v-for="todo, index in list" :key="todo.name"
             
-                <todo :name="todo.name" @del="del(index)" :completed="completed" ></todo>
+            :class="{'completed': done, 'editing' : todo === editing}">
+            
+                <todo :name="todo.name" @del="del(index)" :done.sync="done"
+                @edittodo="edittodo(todo)"
+                ></todo>
           
-              <!-- <input type="text" class="edit"> -->
-            </div>
-          </transition-group>
-
+                <input type="text" class="edit" v-model="todo.name">
+          </li>  
+         
+          
          
         </ul>
       </div>
