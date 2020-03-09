@@ -11,22 +11,22 @@ Vue.component('todo',{
         return {isDone: this.done, valueLocal:this.value,}
     },
     template:
-    `<div class="view">
+    `<li class="todo" :class="{'completed': done, 'editing' : todo === editing}">
    
-    <div v-if="edit.todo">
-        <input type="checkbox" class="toggle" v-model="done" @click="tib">
-        
-        <label @dblclick="edit.todo="true">{{name}}</label>
-        
-        <button class="destroy" @click="del"></button>
-    </div>
+        <div v-if="edit.todo" class="view">
+            <input type="checkbox" class="toggle" v-model="done" @click="tib">
+            
+            <label @dblclick="edit.todo=false;">{{name}}</label>
+            
+            <button class="destroy" @click="del"></button>
+        </div>
 
-  <div v-else>
-        <input type="text" class="edit" v-model="todo.name"
-        @keyup.enter="edit.todo="false">
-  </div>
+        <div v-else class="view">
+                <input type="text" class="edit"
+                @keyup.enter="edit.todo=true;">
+        </div>
    
-    </div>`, 
+    </li>`, 
     methods: {
        tib: function () {
         this.isDone = !this.isDone
