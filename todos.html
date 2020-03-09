@@ -26,22 +26,16 @@
         <label for="toggle-all">Mark all as complete</label>
         <ul class="todo-list">
 
-    
             <li class="todo" v-for="todo, index in list" :key="todo.name"
-            
             :class="{'completed': done, 'editing' : todo === editing}">
             
-                <todo :name="todo.name" @del="del(index)" :done.sync="done"
+                <todo :name="todo.name" @del="del(index)" :todo="todo" :done.sync="done"
                 @edittodo="edittodo(todo)"
                 ></todo>
-          
-                <input type="text" class="edit" v-model="todo.name">
+        
           </li>  
-         
-          
-         
+
         </ul>
-      </div>
       <footer class="footer" v-show="list.length > 0">
         <span class="todo-count"><strong>{{list.length}}</strong> tâches à faire</span>
         <ul class="filters">

@@ -1,19 +1,31 @@
 Vue.component('todo',{
     props: {
         name: String,
-        done:Boolean, default: false
+        todo:Object,
+        done:Boolean, default: false, 
+        edit:Boolean, default: false, 
+
+        value: []
     },
     data: function () {
-        return {isDone: this.done}
+        return {isDone: this.done, valueLocal:this.value,}
     },
     template:
-    `<div class="view" >
+    `<div class="view">
    
-    <input type="checkbox" class="toggle" v-model="done" @click="tib">
-    <label @dblclick="chang">{{name}}</label>
-    <button class="destroy" @click="del"></button>
-   
+    <div v-if="edit.todo">
+        <input type="checkbox" class="toggle" v-model="done" @click="tib">
+        
+        <label @dblclick="edit.todo="true">{{name}}</label>
+        
+        <button class="destroy" @click="del"></button>
+    </div>
 
+  <div v-else>
+        <input type="text" class="edit" v-model="todo.name"
+        @keyup.enter="edit.todo="false">
+  </div>
+   
     </div>`, 
     methods: {
        tib: function () {
@@ -21,7 +33,6 @@ Vue.component('todo',{
         this.$emit('update:done', this.isDone)
         },
         chang: function () {
-            
             this.$emit('edittodo')
         },
         del: function () {
@@ -62,4 +73,11 @@ new Vue({
             this.editing = todo
         }
     },
+    directives: {
+        focus: {
+          inserted (el) {
+            el.focus()
+          }
+        }
+      }
 })
