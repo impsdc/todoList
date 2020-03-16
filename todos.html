@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,55 +6,65 @@
   <link rel="stylesheet" href="todos.css">
 </head>
 <style type="css">
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
-}
-.fade-enter, .fade-leave-to  {
-  opacity: 0;
-}
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+  }
+
+  .fade-enter, .fade-leave-to {
+    opacity: 0;
+  }
 </style>
 <body>
-  <div id="todos">
-    <section class="todoapp">
+<div id="todos">
+  <section class="todoapp">
 
-      <header class="header">
-        <h1>Todos</h1>
-        <input type="text" class="new-todo" placeholder="Ajouter une tache" v-model="newtache" @keyup.enter="add()">
-      </header>
+    <header class="header">
+      <h1>Todos</h1>
+      <input type="text" id="task" class="new-todo" placeholder="Ajouter une tache" v-model="newtache"
+             @keyup.enter="add()">
+    </header>
 
-      <div class="main">
-        <input type="checkbox" id="toggle-all" class="toggle-all">
-        <label for="toggle-all">Mark all as complete</label>
-        <ul class="todo-list">
+    <div class="main">
+      <input type="checkbox" id="toggle-all" class="toggle-all" @click="toggleTick">
+      <label for="toggle-all">Mark all as complete</label>
+      <ul class="todo-list">
 
-    
-            <li class="todo" v-for="todo, index in list" :key="todo.name"
-            
-            :class="{'completed': done, 'editing' : todo === editing}">
-            
-                <todo :name="todo.name" @del="del(index)" :done.sync="done"
+        <li class="todo"
+            v-for="(todo, index) in list"
+            :key="index"
+            :class="{'completed': todo.completed, 'editing' : todo === editing}">
+
+          <todo :name="todo.name"
+                :todo="todo"
+                @triggerdelete="triggerdelete(index)"
+                :done.sync="done"
                 @edittodo="edittodo(todo)"
-                ></todo>
-          
-                <input type="text" class="edit" v-model="todo.name">
-          </li>  
-         
-          
-         
-        </ul>
-      </div>
-      <footer class="footer" v-show="list.length > 0">
-        <span class="todo-count"><strong>{{list.length}}</strong> tâches à faire</span>
-        <ul class="filters">
-          <li><a href="#" class="selected">Toutes</a></li>
-          <li><a href="#">À faire</a></li>
-          <li><a href="#">Faites</a></li>
-        </ul>
-        <button class="clear-completed">Clear accomplished</button>
-      </footer>
-    </section>
-  </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
-  <script src="app.js"></script>
+                @tick="tick(todo)"
+          ></todo>
+
+          <input type="text" class="edit" v-model="todo.name" @keyup.enter="changeName(todo)" @keyup.esc="cancelEdit(todo)">
+        </li>
+
+      </ul>
+    </div>
+    <footer class="footer" v-show="list.length > 0">
+        <span class="todo-count">
+          <strong>{{tasksToDo}}</strong> tâches à faire</span>
+      <ul class="filters">
+        <li><a @click="showAll" style="cursor: pointer;" class="selected">Toutes</a></li>
+        <li><a @click="showToDo" style="cursor: pointer;">À faire</a></li>
+        <li><a @click="showDone" style="cursor: pointer;">Faites</a></li>
+      </ul>
+      <button class="clear-completed" @click="clearAccomplished" v-if="tasksToDo<list.length">Clear accomplished
+      </button>
+    </footer>
+
+    <div id="snackbar">{{message}}</div>
+
+  </section>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
+
