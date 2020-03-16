@@ -5,10 +5,10 @@ Vue.component('todo', {
     },
     template:
         `<div class="view" >
-        <input type="checkbox" class="toggle" v-model="todo.completed" @click="tick">
-        <label @dblclick="edittodo">{{name}}</label>
-        <button class="destroy" @click="triggerdelete"></button>
-    </div>`,
+            <input type="checkbox" class="toggle" v-model="todo.completed" @click="tick">
+            <label @dblclick="edittodo">{{name}}</label>
+            <button class="destroy" @click="triggerdelete"></button>
+        </div>`,
     methods: {
         tick: function () {
             this.$emit('tick', this.todo.completed);
